@@ -1,0 +1,10 @@
+# ignore the lib folder
+lib
+backup
+
+# ignore .exe files
+*.exe
+
+# ignore archives
+*.zip
+*.tgz
