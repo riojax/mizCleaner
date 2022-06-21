@@ -1,10 +1,22 @@
-# ignore the lib folder
-lib
-backup
+# ignore temp folders
+client/lib
+client/backup
 
-# ignore .exe files
+# ignore objects
+*.o
+*.ppu
+*.rsj
+
+# ignore project session
+*.lps
+
+# ignore binaries
 *.exe
+*.dbg
 
 # ignore archives
 *.zip
 *.tgz
+
+# ignore linux
+mizCleaner
