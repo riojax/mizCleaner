@@ -3124,7 +3124,7 @@ object FormMain: TFormMain
     00FF000100FF000700FF000700FF000700FF000700FF000700FF000700FF0007
     44FF
   }
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.12.0'
   object teFilename: TEdit
     Left = 8
     Height = 23
@@ -3337,7 +3337,7 @@ object FormMain: TFormMain
   end
   object OpenDialog1: TOpenDialog
     Filter = 'DCS Mission file|*.miz'
-    left = 88
-    top = 184
+    Left = 88
+    Top = 184
   end
 end

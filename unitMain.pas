@@ -26,7 +26,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  Buttons, Zipper, Process, Dos, UnitAbout, DCSUtils;
+  Buttons, Zipper, Process, UnitAbout, DCSUtils;
 
 type
 
@@ -47,19 +47,20 @@ type
     procedure    btExitClick(Sender: TObject);
 
   private
-    UnZipper:  TUnZipper;
-    OurZipper: TZipper;
-    extProc:   TProcess;
-    pathtmp:   String;
-    pathorg:   String;
-    dirInfo:   SearchRec;
-    sfnd:      String;
-    slin:      AnsiString;
-    sfin:      AnsiString;
-    slst:      TStringList;
-    tok:       Boolean;
-    fdRead:    TextFile;
-    fdWrite:   TextFile;
+    UnZipper   : TUnZipper;
+    OurZipper  : TZipper;
+    extProc    : TProcess;
+    pathtmp    : String;
+    pathorg    : String;
+    dirInfo    : TSearchRec;
+    FindResult : Integer;
+    sfnd       : String;
+    slin       : AnsiString;
+    sfin       : AnsiString;
+    slst       : TStringList;
+    tok        : Boolean;
+    fdRead     : TextFile;
+    fdWrite    : TextFile;
 
   public
 
@@ -166,8 +167,8 @@ begin
 
   Memo1.Lines.Add('[*] Optimize PNGs');
   ChDir(pathtmp + '/MIZCLEANER/l10n/DEFAULT/');
-  FindFirst('*.png', Archive, dirInfo);
-  while DosError = 0 do
+  FindResult := FindFirst('*.png', faArchive, dirInfo);
+  while FindResult = 0 do
   begin
     try
       extProc := TProcess.Create(nil);
@@ -178,8 +179,9 @@ begin
       extProc.Free;
     except
     end;
-    FindNext(dirInfo);
+    FindResult := FindNext(dirInfo);
   end;
+  FindClose(dirInfo);
   ChDir(pathtmp + '/MIZCLEANER');
 
   Memo1.Lines.Add('[*] Packing mission file');
@@ -194,25 +196,28 @@ begin
 
   Memo1.Lines.Add('[*] Delete temporal files');
   ChDir(pathtmp + '/MIZCLEANER/l10n/DEFAULT/');
-  FindFirst('*', Archive, dirInfo);
-  while DosError = 0 do
+  FindResult := FindFirst('*', faArchive, dirInfo);
+  while FindResult = 0 do
   begin
     try
       DeleteFile(dirInfo.Name);
     except
     end;
-    FindNext(dirInfo);
+    FindResult := FindNext(dirInfo);
   end;
+  FindClose(dirInfo);
+
   ChDir(pathtmp + '/MIZCLEANER');
-  FindFirst('*', Archive, dirInfo);
-  while DosError = 0 do
+  FindResult := FindFirst('*', faArchive, dirInfo);
+  while FindResult = 0 do
   begin
     try
       DeleteFile(dirInfo.Name);
     except
     end;
-    FindNext(dirInfo);
+    FindResult := FindNext(dirInfo);
   end;
+  FindClose(dirInfo);
 
   Memo1.Lines.Add('[*] Mission cleaning finished!');
 
